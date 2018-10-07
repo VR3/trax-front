@@ -2,18 +2,58 @@ import React, { Component } from 'react';
 import AOS from 'aos';
 import './App.css';
 import {Transactions, Notification, Chart, Collected} from './components';
-import { Grid, Row, Col } from 'react-flexbox-grid';
 import pool1 from './pool-split_01.png';
 import pool2 from './pool-split_02.png';
 import Whiteline from './Whiteline.png';
 
 class App extends Component {
 
-  componentWillMount() {
-    AOS.init();
+  constructor(props) {
+    super(props);
+    this.state = {
+      collected: [{x: Date.now(), y: 0}],
+    }
   }
 
+  getData = () => {
+    fetch('https://trax-teleton.herokuapp.com/api/collected', {
+        method: 'get',
+        mode: 'cors',
+    }).then((response) => {
+        return response.json();
+    }).then((res) => {
+        console.log(res)
+        const collected = res[0].collected;
+        const dataCollected = {x: Date.now(), y: collected};
+        this.setState({
+            collected: [this.state.collected[0], dataCollected]
+        });
+    }).catch((err) => {
+        console.log(err);
+    });
+}
+
+  componentWillMount() {
+    AOS.init();
+    this.getData();
+  }
+
+  addToCollected = (amount) => {
+    const newTx = {x: Date.now(), y: amount};
+    this.setState(prevState => ({
+      collected: [...prevState.collected, newTx]
+    }))
+  }
+
+  getLatestAmount = () => { 
+    const {collected} = this.state;
+    return collected[collected.length - 1].y;
+  }
+
+
   render() {
+
+    const {collected} = this.state;
     return (
       <div className="App">
         <section id="section01">
@@ -27,16 +67,17 @@ class App extends Component {
         </section>
         <section id="section02">
           <header className="App-header2">
-            <div class="lds-circle" style={{zIndex: 1, position: 'absolute', top: '0', marginTop: '-10vh'}}></div>
-            <img src={Whiteline} style={{height: '100vh'}} />
+            <div class="lds-circle" style={{zIndex: 10, marginTop: '-10vh'}}></div>
+            <img src={Whiteline} style={{height: '100vh', position: 'relative', top: '0'}} />
           </header>
         </section>
         <section id="section03">
           <header className="App-header3">
-            <Collected />
+            <Collected amount={this.getLatestAmount()}/>
+            <Chart amount={this.getLatestAmount()} />
           </header>
         </section>
-        <Notification />
+        <Notification addToCollected={this.addToCollected} />
       </div>
     );
   }

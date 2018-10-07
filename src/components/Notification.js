@@ -17,7 +17,7 @@ export default class Notification extends Component {
         }
 
     }
-    
+
     componentWillMount() {
         AOS.init();
         //this.getData();
@@ -43,8 +43,9 @@ export default class Notification extends Component {
         });
     
         socketIO.on("donations", data => {
-          console.log('Donations', data);
-          toast.info(this.getMessage(data.amount), {className: 'notification'});
+            console.log('Donations', data);
+            toast.info(this.getMessage(data.amount), {className: 'notification'});
+            this.props.addToCollected(data.amount);
         });
     }
     
