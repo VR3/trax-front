@@ -18,6 +18,30 @@
   color: white;
 }
 
+
+.App-header2 {
+  background-color: purple ;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-header3 {
+  background-color: #F4EAD5 ;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+
 .App-link {
   color: #61dafb;
 }
@@ -57,4 +81,27 @@
   100% {
     transform: rotateY(3600deg);
   }
+}
+
+.notification {
+  color: #FF6837;
+  background-color: #ffcd6c !important;
+  box-shadow: none !important;
+  font-size: 15px;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-gap: 10px;
+  background-color: #fff;
+  color: #444;
+}
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
 }

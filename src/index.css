@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+h2 {
+  font-family: "filson-soft",sans-serif !important;
+}
+
+h1 {
+  font-family: "maple-web",sans-serif !important;
+}

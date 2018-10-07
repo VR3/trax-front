@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import AOS from 'aos';
 import './App.css';
-import {Transactions} from './components';
+import {Transactions, Notification, Chart, Collected} from './components';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import pool1 from './pool-split_01.png';
+import pool2 from './pool-split_02.png';
+import Whiteline from './Whiteline.png';
 
 class App extends Component {
 
@@ -16,17 +20,23 @@ class App extends Component {
           <header className="App-header">
             <h1 style={{marginTop: '-15vh', color: 'purple'}}>Teleton</h1>
             <h2 style={{marginTop: '-30px'}}>Trax</h2>
-              <div class="lds-circle"></div>
+              <div class="lds-circle" style={{zIndex: 10}}></div>
+              <img src={pool1} style={{position: 'absolute', bottom: '195px', width:"100px"}} />
+              <img src={pool2} style={{position: 'absolute',bottom: '7px', width:"100px", zIndex: 12}} />
           </header>
         </section>
         <section id="section02">
-          <header className="App-header">
-            <div data-aos="fade-up"
-                data-aos-anchor-placement="top-bottom">
-                <Transactions />
-            </div>
+          <header className="App-header2">
+            <div class="lds-circle" style={{zIndex: 1, position: 'absolute', top: '0', marginTop: '-10vh'}}></div>
+            <img src={Whiteline} style={{height: '100vh'}} />
           </header>
         </section>
+        <section id="section03">
+          <header className="App-header3">
+            <Collected />
+          </header>
+        </section>
+        <Notification />
       </div>
     );
   }
