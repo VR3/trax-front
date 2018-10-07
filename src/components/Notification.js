@@ -37,13 +37,11 @@ export default class Notification extends Component {
     componentDidMount() {
 
         const socketIO = socketIOClient.connect('wss://trax-teleton.herokuapp.com');
-    
-        socketIO.on("message", msg => {
-          console.log('data socket', msg);
-        });
-    
+        
         socketIO.on("donations", data => {
             console.log('Donations', data);
+            const currentAmount = localStorage.getItem('totalData');
+            localStorage.setItem('totalData', parseInt(currentAmount) + parseInt(data.amount));
             toast.info(this.getMessage(data.amount), {className: 'notification'});
             this.props.addToCollected(data.amount);
         });

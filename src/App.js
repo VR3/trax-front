@@ -29,10 +29,10 @@ class App extends Component {
     }).then((response) => {
         return response.json();
     }).then((res) => {
-        console.log(res)
         const collected = res[0].collected;
-
         const dataCollected = {x: Date.now(), y: collected};
+        localStorage.clear()
+        localStorage.setItem('totalData', collected);
         this.setState({
           current: collected,
           collected: [this.state.collected[0], dataCollected],
@@ -67,11 +67,14 @@ class App extends Component {
   }
 
   addToCollected = (amount) => {
-    const newTx = {x: Date.now(), y: amount};
-    this.setState(prevState => ({
-      collected: [...prevState.collected, newTx],
+    const lastValue = (this.getLatestAmount() + amount)
+    const newTx = {x: Date.now(), y: lastValue};
+    console.log(newTx);
+    const newObj = this.state.collected.slice()
+    this.setState({
+      collected: [newObj, newTx],
       current: this.state.current + amount,
-    }))
+    })
     this.calculateRate();
   }
 
@@ -192,8 +195,15 @@ class App extends Component {
         
         <section id="section03">
           <header className="App-header3">
-            <Collected amount={this.getLatestAmount()}/>
-            <Chart amount={this.getLatestAmount()} />
+            <Collected amount={localStorage.getItem('totalData')}/>
+            <div style={{width: '85vh'}}>
+              <Chart collected={collected} current={current}/>
+            </div>
+          </header>
+        </section>
+        <section id="section04">
+          <header className="App-header4">
+          <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWI1ZTU2M2UtZmE3Yy00MmM2LThlNmQtMDZhNDczODA5MTYzIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
           </header>
         </section>
         <Notification addToCollected={this.addToCollected} />
