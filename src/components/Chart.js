@@ -54,24 +54,19 @@ class Chart extends Component {
             xAxes: [{
               type: 'realtime',
               realtime: {
-                  duration: 100000,
+                  duration: 200000,
                   refresh: 3000,
-                  delay: 1500,        // delay of 1000 ms, so upcoming values are known before plotting a line
+                  delay: 2000,        // delay of 1000 ms, so upcoming values are known before plotting a line
                   pause: false,
                   ttl: 200000,
-                  onRefresh: (chart) => {
+                  onRefresh: function(chart) {
 
-                    //const amount = current;
-                    //this.setState({collected: amount})
-                    /// console.log(amount);
-                    const fakeAmount = (Date.now() / 10000000) * (Math.random()  * 1) + 1.005;
-                    // query your data source and get the array of {x: timestamp, y: value} objects
-                    console.log(Date.now())
-                    var data = [{x: Date.now(), y: fakeAmount}]
-                    //console.log(data)
-                    // append the new data array to the existing chart data
-                    Array.prototype.push.apply(chart.data.datasets[0].data, data);
-                    //this.setState({collected: amount});
+                    chart.data.datasets.forEach(function(dataset) {
+                        dataset.data.push({
+                          x: Date.now(),
+                          y: Math.random()
+                        });
+                      });
                 }
               }
             }]
@@ -80,7 +75,7 @@ class Chart extends Component {
             streaming: {            // per-chart option
                 frameRate: 30       // chart is drawn 30 times every second
             }
-            }
+        }
         }
     }
       />

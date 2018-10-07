@@ -203,7 +203,28 @@ class App extends Component {
         </section>
         <section id="section04">
           <header className="App-header4">
+          <div data-aos="fade-right">
+            <h1 style={{
+                color: 'purple',
+                fontSize: '1.5em',
+                textAlign: 'left',
+                alignSelf: 'center'
+              }}>Volumen de donaciones por estado</h1>
+          </div>
           <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWI1ZTU2M2UtZmE3Yy00MmM2LThlNmQtMDZhNDczODA5MTYzIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
+          </header>
+        </section>
+        <section id="section05">
+          <header className="App-header3">
+          <div data-aos="fade-right">
+            <h1 style={{
+                color: 'purple',
+                fontSize: '1.5em',
+                textAlign: 'left',
+                alignSelf: 'center'
+              }}>Distribución de Ingresos por Demanda para enfermedades</h1>
+          </div>
+          <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWUxM2FmNjMtMTFlNy00YjFkLTg1ZjgtYzZjMDY1M2Y5NGJlIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
           </header>
         </section>
         <Notification addToCollected={this.addToCollected} />
