@@ -1,3 +1,7 @@
+:root {
+  --growth: 0
+}
+
 .App {
   text-align: center;
 }
@@ -180,7 +184,7 @@
   left: -5px;
   position: absolute;
   width: 300px;
-  transform: translateY(-450px); /* GROW HERE*/
+  transform: translateY(calc(-740px * var( --growth))); /* GROW HERE*/
   z-index: 99999;
 }
 .collected:after {
@@ -204,7 +208,7 @@
   height: 428.57143px;
   background-color: #ff8b00;
   margin: 0 auto;
-  transform: rotateX(60deg) scaleY(.85); /*GROW HERE*/
+  transform: rotateX(60deg) scaleY(calc(1.5 * var(--growth))); /*GROW HERE*/
   transform-origin: bottom;
   transform-style: preserve-3d;
   width: 310px;
