@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import AOS from 'aos';
 import './App.css';
+import {Transactions} from './components';
 
 class App extends Component {
+
+  componentWillMount() {
+    AOS.init();
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <section id="section01">
+          <header className="App-header">
+            <h1 style={{marginTop: '-15vh', color: 'purple'}}>Teleton</h1>
+            <h2 style={{marginTop: '-30px'}}>Trax</h2>
+              <div class="lds-circle"></div>
+          </header>
+        </section>
+        <section id="section02">
+          <header className="App-header">
+            <div data-aos="fade-up"
+                data-aos-anchor-placement="top-bottom">
+                <Transactions />
+            </div>
+          </header>
+        </section>
       </div>
     );
   }
