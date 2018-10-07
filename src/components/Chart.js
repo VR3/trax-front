@@ -21,6 +21,8 @@ class Chart extends Component {
         }
     }
 
+    
+
   render() {
 
     const {current, collected} = this.props;
