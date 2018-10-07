@@ -195,7 +195,7 @@ class App extends Component {
         
         <section id="section03">
           <header className="App-header3">
-            <Collected amount={localStorage.getItem('totalData')}/>
+            
             <div style={{width: '85vh'}}>
               <Chart collected={collected} current={current}/>
             </div>

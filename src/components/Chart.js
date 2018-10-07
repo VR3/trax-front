@@ -17,18 +17,27 @@ class Chart extends Component {
     constructor(props){
         super(props);
         this.state = {
-            chartData: []
+            collected: localStorage.getItem('totalData')
         }
     }
 
-    
+    formatMoney = (n) => {
+        return "$ " + (Math.round(n * 100) / 100).toLocaleString();
+    }
+        
 
   render() {
 
-    const {current, collected} = this.props;
+    const {current} = this.props;
+    const {collected} = this.state;
 
     return (
-      <Line
+        <div>
+            <div data-aos="fade-right">
+                <h1 style={{color: 'purple'}}>Cifra recolectada</h1> 
+                <h2 style={{color: 'purple'}}>{ this.formatMoney(current)}</h2>
+            </div>
+            <Line
       duration="1000000"
         data={{
           datasets: [{
@@ -45,20 +54,24 @@ class Chart extends Component {
             xAxes: [{
               type: 'realtime',
               realtime: {
-                  duration: 200000,
-                  refresh: 1500,
-                  delay: 1000,        // delay of 1000 ms, so upcoming values are known before plotting a line
+                  duration: 100000,
+                  refresh: 3000,
+                  delay: 1500,        // delay of 1000 ms, so upcoming values are known before plotting a line
                   pause: false,
-                  ttl: undefined,
+                  ttl: 200000,
                   onRefresh: (chart) => {
 
-                    const amount = localStorage.getItem('totalData');
-                    console.log(amount);
+                    //const amount = current;
+                    //this.setState({collected: amount})
+                    /// console.log(amount);
+                    const fakeAmount = (Date.now() / 10000000) * (Math.random()  * 1) + 1.005;
                     // query your data source and get the array of {x: timestamp, y: value} objects
-                    var data = [{x: Date.now(), y: amount}]
+                    console.log(Date.now())
+                    var data = [{x: Date.now(), y: fakeAmount}]
                     //console.log(data)
                     // append the new data array to the existing chart data
                     Array.prototype.push.apply(chart.data.datasets[0].data, data);
+                    //this.setState({collected: amount});
                 }
               }
             }]
@@ -71,6 +84,8 @@ class Chart extends Component {
         }
     }
       />
+        </div>
+      
     );
   }
 }
