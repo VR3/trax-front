@@ -191,7 +191,7 @@ class App extends Component {
         
         <section id="section03">
           <header className="App-header3">
-            <Collected amount={localStorage.getItem('totalData')}/>
+            
             <div style={{width: '85vh'}}>
               <Chart collected={collected} current={current}/>
             </div>
@@ -199,33 +199,28 @@ class App extends Component {
         </section>
         <section id="section04">
           <header className="App-header4">
+          <div data-aos="fade-right">
+            <h1 style={{
+                color: 'purple',
+                fontSize: '1.5em',
+                textAlign: 'left',
+                alignSelf: 'center'
+              }}>Volumen de donaciones por estado</h1>
+          </div>
           <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWI1ZTU2M2UtZmE3Yy00MmM2LThlNmQtMDZhNDczODA5MTYzIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
           </header>
         </section>
-        <section id="section04">
-          <header className="App-header5">
-            <h1 data-aos="fade-right" style={{
-              color: '#ffcd6c',
-              fontSize: '2em',
-              textAlign: 'center',
-              alignSelf: 'center',
-            }}>Consulta las donaciones por hora</h1>
-            <select style={{ backgroundColor: '#ffcb4e', color: 'purple', width: '400px', height: '200px', fontSize: '3em', alignItems:'center', justifyContent: 'center'}} onChange={this.getDonationsByHour}>
-              {hourOptions ? (
-                <React.Fragment>
-                  <option value="2200">2200</option>
-                  <option value="2355">2355</option>
-                </React.Fragment>
-              ): null}
-            </select>
-            <div>
-            {hourDonations ? hourDonations.map(hourDonation => 
-              <div>
-              <h5 style={{color: 'white', fontSize: '1em'}}>{`${(hourDonation.date)} - Hora: ${hourDonation.hour}`}</h5>
-              <NumberFormat style={{color: 'white', fontSize: '1.5em'}}value={hourDonation.amount} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} />
-              </div>
-            ) : null}
-            </div>
+        <section id="section05">
+          <header className="App-header3">
+          <div data-aos="fade-right">
+            <h1 style={{
+                color: 'purple',
+                fontSize: '1.5em',
+                textAlign: 'left',
+                alignSelf: 'center'
+              }}>Distribución de Ingresos por Demanda para enfermedades</h1>
+          </div>
+          <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWUxM2FmNjMtMTFlNy00YjFkLTg1ZjgtYzZjMDY1M2Y5NGJlIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
           </header>
         </section>
         <Notification addToCollected={this.addToCollected} />

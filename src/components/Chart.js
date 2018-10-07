@@ -17,14 +17,26 @@ class Chart extends Component {
     constructor(props){
         super(props);
         this.state = {
-            chartData: []
+            collected: localStorage.getItem('totalData')
         }
     }
 
+    formatMoney = (n) => {
+        return "$ " + (Math.round(n * 100) / 100).toLocaleString();
+    }
+        
+
   render() {
 
+    const {current, collected} = this.props;
+
     return (
-      <Line
+        <div>
+            <div data-aos="fade-right">
+                <h1 style={{color: 'purple'}}>Cifra recolectada</h1> 
+                <h2 style={{color: 'purple'}}>{ this.formatMoney(current)}</h2>
+            </div>
+            <Line
       duration="1000000"
         data={{
           datasets: [{
@@ -42,19 +54,18 @@ class Chart extends Component {
               type: 'realtime',
               realtime: {
                   duration: 200000,
-                  refresh: 1500,
-                  delay: 1000,        // delay of 1000 ms, so upcoming values are known before plotting a line
+                  refresh: 3000,
+                  delay: 2000,        // delay of 1000 ms, so upcoming values are known before plotting a line
                   pause: false,
-                  ttl: undefined,
-                  onRefresh: (chart) => {
+                  ttl: 200000,
+                  onRefresh: function(chart) {
 
-                    const amount = localStorage.getItem('totalData');
-                    console.log(amount);
-                    // query your data source and get the array of {x: timestamp, y: value} objects
-                    var data = [{x: Date.now(), y: amount}]
-                    //console.log(data)
-                    // append the new data array to the existing chart data
-                    Array.prototype.push.apply(chart.data.datasets[0].data, data);
+                    chart.data.datasets.forEach(function(dataset) {
+                        dataset.data.push({
+                          x: Date.now(),
+                          y: Math.random()
+                        });
+                      });
                 }
               }
             }]
@@ -63,10 +74,12 @@ class Chart extends Component {
             streaming: {            // per-chart option
                 frameRate: 30       // chart is drawn 30 times every second
             }
-            }
+        }
         }
     }
       />
+        </div>
+      
     );
   }
 }
