@@ -15,7 +15,6 @@ export default class Notification extends Component {
             delta: null,
             data: [],
         }
-
     }
 
     componentWillMount() {
@@ -48,9 +47,6 @@ export default class Notification extends Component {
     }
     
     render() {
-
-        const {counter} = this.state;
-
         return (
         <div>
             <ToastContainer />

@@ -6,6 +6,18 @@
   text-align: center;
 }
 
+.App-header0-1 {
+  background-color: white ;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: purple;
+  word-wrap: 'break-word';
+}
+
 .App-header0 {
   background-color: #ffcb4e ;
   min-height: 10vh;
@@ -123,6 +135,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+body {
+  background-color: #ffcb4e ;
 }
 
 .lds-circle {

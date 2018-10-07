@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import AOS from 'aos';
 import './App.css';
-import {Notification, Chart, Collected} from './components';
+import {Notification, Chart} from './components';
 import NumberFormat from 'react-number-format';
 import { Line } from 'rc-progress';
 
 
 class App extends Component {
-  
 
   constructor(props) {
     super(props);
@@ -50,7 +49,6 @@ class App extends Component {
     })
     .then(res => res.json())
     .then((res) => {
-      console.log('HOUR OPTIPONS', res);
       this.setState({hourOptions: this.groupBy(res, 'hour')});
     });
 
@@ -126,9 +124,14 @@ class App extends Component {
 
   render() {
     const { collected, expected, current, rate, centers, hourOptions, hourDonations } = this.state;
-    console.log('STATE', this.state);
     return (
       <div className="App">
+      <section id="section01">
+        <header className="App-header0-1">
+          <img style={{ width: '150px'}} alt="trax" src="http://static.vr3.io//vr3/trax/traxLogo.png"></img>
+          <img alt="trax" src="http://static.vr3.io//vr3/trax/traxType2x.png"></img>
+        </header>
+      </section>
       <section id="section01">
       <div className="lds-circle" style={{zIndex: 10}}></div>
         <header className="App-header1">
@@ -209,8 +212,6 @@ class App extends Component {
           </div>
           <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWI1ZTU2M2UtZmE3Yy00MmM2LThlNmQtMDZhNDczODA5MTYzIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
           </header>
-        </section>
-        <section id="section05">
           <header className="App-header3">
           <div data-aos="fade-right">
             <h1 style={{
@@ -223,6 +224,34 @@ class App extends Component {
           <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWUxM2FmNjMtMTFlNy00YjFkLTg1ZjgtYzZjMDY1M2Y5NGJlIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
           </header>
         </section>
+        <section id="section04">
+          <header className="App-header5">
+            <h1 data-aos="fade-right" style={{
+              color: '#ffcd6c',
+              fontSize: '2em',
+              textAlign: 'center',
+              alignSelf: 'center',
+            }}>Consulta las donaciones por hora</h1>
+            <select style={{ backgroundColor: '#ffcb4e', color: 'purple', width: '400px', height: '200px', fontSize: '3em', alignItems:'center', justifyContent: 'center'}} onChange={this.getDonationsByHour}>
+              {hourOptions ? (
+                <React.Fragment>
+                  <option value="2200">2200</option>
+                  <option value="2355">2355</option>
+                  <option value="2355">2400</option>
+                </React.Fragment>
+              ): null}
+            </select>
+            <div>
+            {hourDonations ? hourDonations.map(hourDonation => 
+              <div>
+              <h5 style={{color: 'white', fontSize: '1em'}}>{`${(hourDonation.date)} - Hora: ${hourDonation.hour}`}</h5>
+              <NumberFormat style={{color: 'white', fontSize: '1.5em'}}value={hourDonation.amount} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} />
+              </div>
+            ) : null}
+            </div>
+            </header>
+          </section>
+
         <Notification addToCollected={this.addToCollected} />
       </div>
     );
