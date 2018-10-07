@@ -23,8 +23,6 @@ class Chart extends Component {
 
   render() {
 
-    const {current, collected} = this.props;
-
     return (
       <Line
       duration="1000000"

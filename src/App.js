@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import AOS from 'aos';
 import './App.css';
-import {Transactions, Notification, Chart, Collected} from './components';
+import {Notification, Chart, Collected} from './components';
 import NumberFormat from 'react-number-format';
-import Whiteline from './Whiteline.png';
-import { Line, Circle } from 'rc-progress';
+import { Line } from 'rc-progress';
 
 
 class App extends Component {
@@ -17,9 +16,13 @@ class App extends Component {
       expected: null,
       current: null,
       rate: null,
-      dateOptions: [],
+      hourOptions: [],
+      centers: null,
+      hourOption: '',
+      hourDonations: [],
     }
     this.groupBy = this.groupBy.bind(this);
+    this.getDonationsByHour = this.getDonationsByHour.bind(this);
   }
 
   getData = () => {
@@ -47,9 +50,18 @@ class App extends Component {
     })
     .then(res => res.json())
     .then((res) => {
-      console.log('options', this.groupBy(res, 'hour'))
-      this.setState({dateOptions: this.groupBy(res, 'hour')});
+      console.log('HOUR OPTIPONS', res);
+      this.setState({hourOptions: this.groupBy(res, 'hour')});
     });
+
+    fetch('https://trax-teleton.herokuapp.com/api/centers', {
+      method: 'get',
+    })
+    .then(res => res.json())
+    .then((res) => {
+      this.setState({centers: res});
+    })
+    .then(() => this.calculateCenters())
   }
   
   groupBy = (xs, key) => {
@@ -69,18 +81,38 @@ class App extends Component {
   addToCollected = (amount) => {
     const lastValue = (this.getLatestAmount() + amount)
     const newTx = {x: Date.now(), y: lastValue};
-    console.log(newTx);
     const newObj = this.state.collected.slice()
     this.setState({
       collected: [newObj, newTx],
       current: this.state.current + amount,
     })
     this.calculateRate();
+    this.calculateCenters();
   }
 
   getLatestAmount = () => { 
     const {collected} = this.state;
     return collected[collected.length - 1].y;
+  }
+
+  calculateCenters = () => {
+    const { centers, current } = this.state;
+    const centersCollected = [];
+    
+    centers.map(center => {
+      const collected = center.proportion * current;
+      const accomplished = collected / center.needed_event;
+      center.collected = collected;
+      center.accomplished = accomplished;
+      centersCollected.push(center)
+    })
+
+    this.setState({centers: centersCollected})
+  }
+
+  getDonationsByHour(evt){
+    const { hourOptions } = this.state;
+    this.setState({hourOption: evt.target.value, hourDonations: hourOptions[evt.target.value]})
   }
 
   calculateRate = () => {
@@ -89,55 +121,37 @@ class App extends Component {
     this.setState({
       rate: rate * 100
     })
-    console.log(rate);
     const appRate = document.getElementById('root').style.setProperty('--growth', 1 - rate)
-    console.log('AppRate', appRate);
   }
 
   render() {
-    const { collected, expected, current, rate, dateOptions } = this.state;
+    const { collected, expected, current, rate, centers, hourOptions, hourDonations } = this.state;
+    console.log('STATE', this.state);
     return (
       <div className="App">
       <section id="section01">
       <div className="lds-circle" style={{zIndex: 10}}></div>
-        <header className="App-header0">
-            <h1 style={{
-              color: 'purple',
-              fontSize: '1.5em',
-              textAlign: 'left',
-              width: '30%',
-              alignSelf: 'center'
-            }}>¿Cómo beneficia mi donación?</h1>
-            <div style={{
-              color: 'purple',
-              padding: '20px',
-              textAlign: 'center'
-            }}>
-
-            </div>
-        </header>
         <header className="App-header1">
-          <div style={{
+        <h1 data-aos="fade-right" style={{
+          color: 'purple',
+          fontSize: '1.5em',
+          alignSelf: 'center'
+        }}>¿Cómo beneficia mi donación?</h1>
+          <div data-aos="fade-right" style={{
             padding: '40px',
-            alignSelf: 'flex-start',
+            fontSize: '1.2em',
             color: '#92007b',
-            padding: '20px'
           }}>
             <h4>Nuestra meta este año</h4>
             <h1><NumberFormat value={expected} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h1>
           </div>
-          <div style={{
-            alignSelf: 'flex-end',
-            justifyContent: 'flex-end',
+          <div data-aos="fade-right" style={{
             color: '#ff6837',
-            padding: '20px'
           }}>
             <h4>Hemos logrado</h4>
             <h2><NumberFormat value={current} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h2>
           </div>
-          <div style={{
-            alignSelf: 'flex-end',
-            padding: '20px'
+          <div data-aos="fade-right" style={{
           }}>
             <h3> Falta { parseFloat(rate).toFixed(4) } %</h3>
           </div>
@@ -151,44 +165,26 @@ class App extends Component {
         </header>
       </section>
         <section id="section02">
-          <header className="App-header2">
-            <img 
-              src={Whiteline} 
-              alt='whiteline' 
-              style={{
-                height: '100vh',
-                alignSelf: 'center',
-                position: 'absolute'
-              }}
-            />
-            <h1 style={{
-              position: 'absolute',
+        <header className="App-header1-1">
+          <h1 data-aos="fade-right" style={{
               color: '#ffcd6c',
               fontSize: '2em',
-              textAlign: 'left',
-              alignSelf: 'flex-start',
-            }}>¿A dónde van esas donaciones?</h1>
+              textAlign: 'center',
+              alignSelf: 'center',
+            }}>¿A dónde van mis donaciones?</h1>
+          </header>
+          <header className="App-header2">
               <div className="App-header2-col">
-                <div className="App-header2-row">
-                  <h2>COL 1 ROW 1</h2>
-                </div>
-                <div className="App-header2-row">
-                  <h2>COL 1 ROW 2</h2>
-                </div>
-                <div className="App-header2-row">
-                  <h2>COL 1 ROW 3</h2>
-                </div>
-              </div>
-              <div className="App-header2-col">
-                <div className="App-header2-row">
-                  <h2>COL 2 ROW 1</h2>
-                </div>
-                <div className="App-header2-row">
-                  <h2>COL 2 ROW 2</h2>
-                </div>
-                <div className="App-header2-row">
-                  <h2>COL 2 ROW 3</h2>
-                </div>
+                {centers ? centers.map(center => 
+                  <div className="App-header2-row">
+                    <h2>{center.center} - {parseFloat(center.accomplished * 100).toFixed(2)}%</h2>
+                    <h4 style={{color: '#ffcd6c'}}>
+                    Recaudado: <NumberFormat value={center.collected} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h4>
+                    <p>Requerido: <NumberFormat value={center.needed_event} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></p>
+                    <small style={{color: 'gray', fontSize: '0.75em'}}>Requerido 2018 <NumberFormat value={center.needed} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></small>
+                    <Line percent={center.accomplished <= 1 ? center.accomplished * 100 : 100} strokeWidth="6" strokeColor="#ff9022" />
+                  </div>
+                ) : null}
               </div>
           </header>
         </section>
@@ -204,6 +200,32 @@ class App extends Component {
         <section id="section04">
           <header className="App-header4">
           <iframe width="800" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiNWI1ZTU2M2UtZmE3Yy00MmM2LThlNmQtMDZhNDczODA5MTYzIiwidCI6IjYxYmFkNGJiLWUwNTMtNDc1ZC04ZGI4LWQwMTZkYzk1NGVhNiIsImMiOjN9" frameborder="0" allowFullScreen="true"></iframe>
+          </header>
+        </section>
+        <section id="section04">
+          <header className="App-header5">
+            <h1 data-aos="fade-right" style={{
+              color: '#ffcd6c',
+              fontSize: '2em',
+              textAlign: 'center',
+              alignSelf: 'center',
+            }}>Consulta las donaciones por hora</h1>
+            <select style={{ backgroundColor: '#ffcb4e', color: 'purple', width: '400px', height: '200px', fontSize: '3em', alignItems:'center', justifyContent: 'center'}} onChange={this.getDonationsByHour}>
+              {hourOptions ? (
+                <React.Fragment>
+                  <option value="2200">2200</option>
+                  <option value="2355">2355</option>
+                </React.Fragment>
+              ): null}
+            </select>
+            <div>
+            {hourDonations ? hourDonations.map(hourDonation => 
+              <div>
+              <h5 style={{color: 'white', fontSize: '1em'}}>{`${(hourDonation.date)} - Hora: ${hourDonation.hour}`}</h5>
+              <NumberFormat style={{color: 'white', fontSize: '1.5em'}}value={hourDonation.amount} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} />
+              </div>
+            ) : null}
+            </div>
           </header>
         </section>
         <Notification addToCollected={this.addToCollected} />
