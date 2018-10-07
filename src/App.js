@@ -4,7 +4,7 @@ import './App.css';
 import {Transactions, Notification, Chart, Collected} from './components';
 import NumberFormat from 'react-number-format';
 import Whiteline from './Whiteline.png';
-import styled from 'styled-components';
+import { Line, Circle } from 'rc-progress';
 
 
 class App extends Component {
@@ -17,7 +17,9 @@ class App extends Component {
       expected: null,
       current: null,
       rate: null,
+      dateOptions: [],
     }
+    this.groupBy = this.groupBy.bind(this);
   }
 
   getData = () => {
@@ -39,7 +41,23 @@ class App extends Component {
     }).catch((err) => {
         console.log(err);
     });
+
+    fetch('https://trax-teleton.herokuapp.com/api/donations', {
+      method: 'get',
+    })
+    .then(res => res.json())
+    .then((res) => {
+      console.log('options', this.groupBy(res, 'hour'))
+      this.setState({dateOptions: this.groupBy(res, 'hour')});
+    });
   }
+  
+  groupBy = (xs, key) => {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
 
   componentWillMount() {
     AOS.init();
@@ -77,37 +95,104 @@ class App extends Component {
   }
 
   render() {
-    const { collected, expected, current, rate } = this.state;
-    console.log('State:', this.state);
+    const { collected, expected, current, rate, dateOptions } = this.state;
     return (
       <div className="App">
-        <section id="section01">
-          <header className="App-header">
-            <h1 style={{marginTop: '-15vh', color: 'purple'}}>Teleton</h1>
-            <h2 style={{marginTop: '-30px'}}>Trax</h2>
-              <div className="lds-circle" style={{zIndex: 10}}></div>
+      <section id="section01">
+      <div className="lds-circle" style={{zIndex: 10}}></div>
+        <header className="App-header0">
+            <h1 style={{
+              color: 'purple',
+              fontSize: '1.5em',
+              textAlign: 'left',
+              width: '30%',
+              alignSelf: 'center'
+            }}>¿Cómo beneficia mi donación?</h1>
+            <div style={{
+              color: 'purple',
+              padding: '20px',
+              textAlign: 'center'
+            }}>
 
-              <p>Meta</p>
-              <h1 style={{color: '#92007b'}}><NumberFormat value={expected} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h1>
-              <p>Recaudado</p>
-              <h3><NumberFormat value={current} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h3>
-              <p>Falta</p>
-              <h3>{ parseFloat(rate).toFixed(4) } %</h3>
-
-              <div className="wrapper">
-                <div className='expected'></div>
-                <div className="collected-bg"></div>
-                <div className="collected"></div>
-                <div className="wires"></div>
+            </div>
+        </header>
+        <header className="App-header1">
+          <div style={{
+            padding: '40px',
+            alignSelf: 'flex-start',
+            color: '#92007b',
+            padding: '20px'
+          }}>
+            <h4>Nuestra meta este año</h4>
+            <h1><NumberFormat value={expected} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h1>
+          </div>
+          <div style={{
+            alignSelf: 'flex-end',
+            justifyContent: 'flex-end',
+            color: '#ff6837',
+            padding: '20px'
+          }}>
+            <h4>Hemos logrado</h4>
+            <h2><NumberFormat value={current} displayType={'text'} decimalScale={4} thousandSeparator={true} prefix={'$'} /></h2>
+          </div>
+          <div style={{
+            alignSelf: 'flex-end',
+            padding: '20px'
+          }}>
+            <h3> Falta { parseFloat(rate).toFixed(4) } %</h3>
+          </div>
+          <div className="wrapper">
+            <div className='expected'></div>
+            <div className="collected-bg"></div>
+            <div className="collected"></div>
+            <div className="wires"></div>
+          </div>
+          
+        </header>
+      </section>
+        <section id="section02">
+          <header className="App-header2">
+            <img 
+              src={Whiteline} 
+              alt='whiteline' 
+              style={{
+                height: '100vh',
+                alignSelf: 'center',
+                position: 'absolute'
+              }}
+            />
+            <h1 style={{
+              position: 'absolute',
+              color: '#ffcd6c',
+              fontSize: '2em',
+              textAlign: 'left',
+              alignSelf: 'flex-start',
+            }}>¿A dónde van esas donaciones?</h1>
+              <div className="App-header2-col">
+                <div className="App-header2-row">
+                  <h2>COL 1 ROW 1</h2>
+                </div>
+                <div className="App-header2-row">
+                  <h2>COL 1 ROW 2</h2>
+                </div>
+                <div className="App-header2-row">
+                  <h2>COL 1 ROW 3</h2>
+                </div>
+              </div>
+              <div className="App-header2-col">
+                <div className="App-header2-row">
+                  <h2>COL 2 ROW 1</h2>
+                </div>
+                <div className="App-header2-row">
+                  <h2>COL 2 ROW 2</h2>
+                </div>
+                <div className="App-header2-row">
+                  <h2>COL 2 ROW 3</h2>
+                </div>
               </div>
           </header>
         </section>
-        <section id="section02">
-          <header className="App-header2">
-            <div class="lds-circle" style={{zIndex: 1, position: 'absolute', top: '0', marginTop: '-10vh'}}></div>
-            <img src={Whiteline} style={{height: '100vh'}} />
-          </header>
-        </section>
+        
         <section id="section03">
           <header className="App-header3">
             <Collected amount={localStorage.getItem('totalData')}/>

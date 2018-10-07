@@ -55,13 +55,10 @@ class Chart extends Component {
                     const amount = localStorage.getItem('totalData');
                     console.log(amount);
                     // query your data source and get the array of {x: timestamp, y: value} objects
-                    //var data = [{x: Date.now(), y: amount}]
-                    chart.data.datasets.forEach(function(dataset) {
-                        dataset.data.push({
-                          x: Date.now(),
-                          y: amount
-                        });
-                      });
+                    var data = [{x: Date.now(), y: amount}]
+                    //console.log(data)
+                    // append the new data array to the existing chart data
+                    Array.prototype.push.apply(chart.data.datasets[0].data, data);
                 }
               }
             }]
