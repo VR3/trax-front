@@ -22,12 +22,11 @@ class App extends Component {
     }).then((response) => {
         return response.json();
     }).then((res) => {
-        console.log(res)
         const collected = res[0].collected;
         const dataCollected = {x: Date.now(), y: collected};
-        this.setState({
-            collected: [this.state.collected[0], dataCollected]
-        });
+        this.setState(prevState => ({
+          collected: [...prevState.collected, dataCollected]
+        }))
     }).catch((err) => {
         console.log(err);
     });
@@ -39,10 +38,13 @@ class App extends Component {
   }
 
   addToCollected = (amount) => {
-    const newTx = {x: Date.now(), y: amount};
+    const lastValue = (this.getLatestAmount() + amount)
+    const newTx = {x: Date.now(), y: lastValue};
+    console.log(newTx);
     this.setState(prevState => ({
       collected: [...prevState.collected, newTx]
     }))
+    localStorage.setItem('lastValue', lastValue);
   }
 
   getLatestAmount = () => { 
@@ -54,6 +56,8 @@ class App extends Component {
   render() {
 
     const {collected} = this.state;
+    console.log(this.state)
+  
     return (
       <div className="App">
         <section id="section01">
@@ -74,7 +78,7 @@ class App extends Component {
         <section id="section03">
           <header className="App-header3">
             <Collected amount={this.getLatestAmount()}/>
-            <Chart amount={this.getLatestAmount()} />
+            <Chart getLatestAmount={this.getLatestAmount} />
           </header>
         </section>
         <Notification addToCollected={this.addToCollected} />
