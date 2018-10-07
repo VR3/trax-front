@@ -40,6 +40,8 @@ export default class Notification extends Component {
         
         socketIO.on("donations", data => {
             console.log('Donations', data);
+            const currentAmount = localStorage.getItem('totalData');
+            localStorage.setItem('totalData', parseInt(currentAmount) + parseInt(data.amount));
             toast.info(this.getMessage(data.amount), {className: 'notification'});
             this.props.addToCollected(data.amount);
         });

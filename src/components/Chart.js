@@ -23,7 +23,7 @@ class Chart extends Component {
 
   render() {
 
-    const {getLatestAmount} = this.props;
+    const {current, collected} = this.props;
 
     return (
       <Line
@@ -50,7 +50,8 @@ class Chart extends Component {
                   ttl: undefined,
                   onRefresh: (chart) => {
 
-                    const amount = getLatestAmount();
+                    const amount = localStorage.getItem('totalData');
+                    console.log(amount);
                     // query your data source and get the array of {x: timestamp, y: value} objects
                     //var data = [{x: Date.now(), y: amount}]
                     chart.data.datasets.forEach(function(dataset) {

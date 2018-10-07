@@ -1,3 +1,7 @@
+:root {
+  --growth: 0
+}
+
 .App {
   text-align: center;
 }
@@ -18,9 +22,19 @@
   color: white;
 }
 
-
 .App-header2 {
   background-color: purple ;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-header4 {
+  background-color: #ffcd6c ;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -58,6 +72,7 @@
 .App-link {
   color: #61dafb;
 }
+
 
 @keyframes App-logo-spin {
   from {
@@ -100,7 +115,7 @@
   color: #FF6837;
   background-color: #ffcd6c !important;
   box-shadow: none !important;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .wrapper {
@@ -117,4 +132,129 @@
   border-radius: 5px;
   padding: 20px;
   font-size: 150%;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+.wrapper {
+  position: relative;
+  top: 50px;
+  transform: translateX(51% - 60px);
+}
+.expected {
+  position: absolute;
+  border-left: 5px solid #92007b;
+  border-right: 5px solid #92007b;
+  height: 750px;
+  background-color: #ffcb00;
+  margin: 0 auto;
+  transform: translateX(-5px) rotateX(60deg);
+  transform-origin: 0 150px;
+  transform-style: preserve-3d;
+  width: 310px;
+}
+.expected:before {
+  border: 10px solid #92007b;
+  background-color: #ffcb00;
+  border-radius: 50%;
+  content: '';
+  height: 300px;
+  left: -5px;
+  position: absolute;
+  width: 300px;
+}
+.expected:after {
+  border: 10px solid #92007b;
+  background-color: #ffcb00;
+  border-radius: 50%;
+  content: '';
+  height: 300px;
+  left: -5px;
+  position: absolute;
+  width: 300px;
+}
+.expected:before {
+  top: -150px;
+}
+.expected:after {
+  bottom: -150px;
+}
+.collected {
+  position: absolute;
+  top: 370px;
+  margin: 0 auto;
+  transform: translateX(-0.1px) rotateX(60deg);
+  transform-origin: 0 150px;
+  transform-style: preserve-3d;
+}
+.collected:before {
+  border: 10px solid #ff5b07;
+  background-color: #ff5b07;
+  border-radius: 50%;
+  content: '';
+  height: 300px;
+  left: -5px;
+  position: absolute;
+  width: 300px;
+  transform: translateY(calc(-740px * var( --growth))); /* GROW HERE*/
+  z-index: 99999;
+}
+.collected:after {
+  border: 10px solid #ff8b00;
+  background-color: #ff8b00;
+  border-radius: 50%;
+  content: '';
+  height: 300px;
+  left: -4px;
+  position: absolute;
+  width: 296.25px;
+}
+.collected:before {
+  top: -150px;
+}
+.collected:after {
+  bottom: -150px;
+}
+.collected-bg {
+  position: absolute;
+  height: 428.57143px;
+  background-color: #ff8b00;
+  margin: 0 auto;
+  transform: rotateX(60deg) scaleY(calc(1.5 * var(--growth))); /*GROW HERE*/
+  transform-origin: bottom;
+  transform-style: preserve-3d;
+  width: 310px;
+}
+.collected-bg:before {
+  top: -150px;
+}
+.collected-bg:after {
+  bottom: -150px;
+}
+.wires {
+  position: absolute;
+  border-left: 6px solid #92007b;
+  border-right: 5px solid #92007b;
+  height: 750px;
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0 auto;
+  transform: translateX(-5px) rotateX(60deg);
+  transform-origin: 0 150px;
+  transform-style: preserve-3d;
+  width: 310px;
+}
+.wires:before {
+  border: 10px solid #92007b;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 50%;
+  content: '';
+  height: 300px;
+  left: -5px;
+  position: absolute;
+  width: 300px;
+}
+.wires:before {
+  top: -150px;
+}
+.wires:after {
+  bottom: -150px;
 }
