@@ -13,9 +13,9 @@ Las siguientes instrucciones te ayudaran a instalar una copia del proyecto en tu
 ### Requisitos
 
 Antes de insalar Trax, es necesario contar con un navegador web (Chrome, Safari, Internet Explorer) y Node.js 8+.
-Si no lo tienes puedes descargarlo gratis [aquí](https://nodejs.org/es/)
+Si no tienes Node.js aún puedes descargar la última versión gratis [aquí](https://nodejs.org/es/)
 
-Para descargar una copa del proyecto corre la siguiente instrucción en tu linea de comando o descarga [la versión ZIP](https://github.com/VR3/trax-front/archive/master.zip)
+Para descargar una copía del proyecto corre la siguiente instrucción en tu linea de comando o descarga [la versión ZIP](https://github.com/VR3/trax-front/archive/master.zip)
 
 ```
 git clone https://github.com/VR3/trax-front.git
@@ -37,7 +37,7 @@ Genera la versión optimizada del proyecto
 npm run build
 ```
 
-Inicia la aplicación en localhost:3000
+Inicia la aplicación en localhost:3000 desde tu navegador
 
 ```
 npm start
